@@ -10,7 +10,7 @@ body {
 }
 body {
   @include isFlex(center, center);
-  font-family: $quicksand;
+  //font-family: $quicksand;
   background: $darkslategray;
   color: white;
   margin: 0;

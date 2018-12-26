@@ -1,31 +1,23 @@
-Webpack project starter with Pug, Sass/Stylus, jQuery, Babel and Yarn
+基于 webpack pug sass 的 传统html优化编辑脚手架
 ===================
 
-The purpose if this webpack starter is to allow people to create websites without frameworks/libraries like React, Angular, Vue and only using simple but powerful technologies to build quality websites.
+这个框架的目的在于使用 更加高级的 html模板语言 `PUG` 和  `CSS`　预处理器　SASS 等 高级语言的支持，优化传统的html开发
 
-## Technologies used
+并且使用`webpack`来提供热更新能力
+## 使用的技术
 
-- Templating: `Pug`
-- Styling: `Sass` *but you can also use stylus*
-- Scripting: `jQuery or plain Javascript`
-- JS Compiler: `Babel ES6`
+- HTML模板: `Pug`
+- CSS预处理器: `Sass` *可以增加*
+- JS: `jQuery 或者 普通 Javascript`
+- 模块化工具: `Webpack, Webpack Dev Server`
 
-## Features
+## 当你新建一个`pug`文件并且需要单独输出网页时
 
-- Well organized folder structure for view, styles and assets.
-- Webpack notifier on every compilation.
-- Compatibility with `manifest`, `browserconfig` and other external files you wish to include.
-- `Babel module resolver` configured to use alias and simplify the paths you need to import.
-- `Editorconfig`
-- Yarn instead NPM
-- PostCSS
+-  在`build/pages`中的`pages`列表变量中新建一个如下对象即可
 
-## Contributions
-
-You can contribute directly to this repository or create a fork and peform your own modifications, feel free to use it in the way you want!
-
-## Donations
-
-You can of course help a little bit with some donation to muy more coffee :)
-
-<a href="https://www.buymeacoffee.com/edgardo" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+```js
+{
+     template: "views/index.pug",//pug模板路径
+     target: "index.html",      //目标文件名
+}
+```

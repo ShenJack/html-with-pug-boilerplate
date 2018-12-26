@@ -2,18 +2,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // Files
 const utils = require('./utils')
-const plugins = require('../postcss.config');
 
 // Configuration
-module.exports = env => {
+module.exports = {
 
-  return {
     context: path.resolve(__dirname, '../src'),
     entry: {
       app: './app.js'
@@ -21,7 +18,7 @@ module.exports = env => {
     output: {
       path: path.resolve(__dirname, '../dist'),
       publicPath: '/',
-      filename: 'assets/js/[name].[hash:7].bundle.js'
+      filename: 'bundle.js'
     },
     devServer: {
       contentBase: path.resolve(__dirname, '../src'),
@@ -72,7 +69,6 @@ module.exports = env => {
                   minimize: true
                 }
               },
-              'postcss-loader?sourceMap',
               'sass-loader?sourceMap'
             ]
           })
@@ -81,65 +77,61 @@ module.exports = env => {
           test: /\.pug$/,
           use: [
             {
-              loader: 'pug-loader'
+              loader: 'pug-loader',
+              options: {
+                pretty: true
+              }
             }
           ]
         },
-        {
-          test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 3000,
-            name: 'assets/images/[name].[hash:7].[ext]'
-          }
-        },
-        {
-          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 5000,
-            name: 'assets/fonts/[name].[hash:7].[ext]'
-          }
-        },
-        {
-          test: /\.(mp4)(\?.*)?$/,
-          loader: 'url-loader',
-          options: {
-            limit: 10000,
-            name: 'assets/videos/[name].[hash:7].[ext]'
-          }
-        }
+        // {
+        //   test: /\.(png|jpe?g|gif|svg|ico)(\?.*)?$/,
+        //   loader: 'url-loader',
+        //   options: {
+        //     limit: 3000,
+        //     name: 'assets/images/[name].[hash:7].[ext]'
+        //   }
+        // },
+        // {
+        //   test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        //   loader: 'url-loader',
+        //   options: {
+        //     limit: 5000,
+        //     name: 'assets/fonts/[name].[hash:7].[ext]'
+        //   }
+        // },
+        // {
+        //   test: /\.(mp4)(\?.*)?$/,
+        //   loader: 'url-loader',
+        //   options: {
+        //     limit: 10000,
+        //     name: 'assets/videos/[name].[hash:7].[ext]'
+        //   }
+        // }
       ]
     },
     plugins: [
+      // Copy your file from development to production
       new CopyWebpackPlugin([
-        { from: '../manifest.json', to: 'manifest.json' },
-        { from: '../browserconfig.xml', to: 'browserconfig.xml' },
-        { from: 'assets/images/favicons/android-chrome-192x192.png', to: 'assets/images/android-chrome-192x192.png' },
-        { from: 'assets/images/favicons/android-chrome-256x256.png', to: 'assets/images/android-chrome-256x256.png' },
-        { from: 'assets/images/favicons/mstile-150x150.png', to: 'assets/images/mstile-150x150.png' }
+        { from: 'views/app.js', to: 'app.js' },
+        { from: '../static',to:path.join(__dirname,'../dist/static')}
       ]),
       new ExtractTextPlugin({
-        filename: 'assets/css/[name].[hash:7].bundle.css',
+        filename: 'style.css',
         allChunks: true
       }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'vendor'
-      }),
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'vendor'
+      // }),
 
       /*
         Pages
       */
 
-      // // Desktop page
-      new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: 'views/index.pug',
-        inject: true
-      }),
 
-      ...utils.pages(env),
-      ...utils.pages(env, 'blog'),
+      //
+      // ...utils.pages(env),
+      // ...utils.pages(env, 'blog'),
 
       new webpack.ProvidePlugin({
         $: 'jquery',
@@ -147,9 +139,8 @@ module.exports = env => {
         'window.$': 'jquery',
         'window.jQuery': 'jquery'
       }),
-      new WebpackNotifierPlugin({
-        title: 'Your project'
-      })
+      // new WebpackNotifierPlugin({
+      //   title: 'Your project'
+      // })
     ]
-  }
 };
